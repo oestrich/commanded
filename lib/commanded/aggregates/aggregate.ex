@@ -7,13 +7,13 @@ defmodule Commanded.Aggregates.Aggregate do
 
   use GenServer
   use Commanded.EventStore
+  use Commanded.Registry
 
   require Logger
 
   alias Commanded.Aggregates.Aggregate
   alias Commanded.Event.Mapper
 
-  @aggregate_registry_name :aggregate_registry
   @read_event_batch_size 100
 
   defstruct [
@@ -33,7 +33,7 @@ defmodule Commanded.Aggregates.Aggregate do
   end
 
   defp via_tuple(aggregate_uuid) do
-    {:via, Registry, {@aggregate_registry_name, aggregate_uuid}}
+    {:via, @registry, aggregate_uuid}
   end
 
   def init(%Aggregate{} = state) do

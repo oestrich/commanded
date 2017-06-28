@@ -1,6 +1,7 @@
 defmodule Commanded.Entities.ExecuteCommandForAggregateTest do
   use Commanded.StorageCase
   use Commanded.EventStore
+  use Commanded.Registry
 
   doctest Commanded.Aggregates.Aggregate
 
@@ -87,6 +88,6 @@ defmodule Commanded.Entities.ExecuteCommandForAggregateTest do
 
     # process should exit
     assert_receive({:EXIT, _from, _reason})
-    assert Registry.lookup(:aggregate_registry, aggregate_uuid) == []
+    assert @registry.whereis_name(aggregate_uuid) == :undefined
   end
 end

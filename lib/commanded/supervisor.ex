@@ -8,7 +8,7 @@ defmodule Commanded.Supervisor do
 
   def init(_) do
     children = [
-      supervisor(Registry, [:unique, :aggregate_registry]),
+      supervisor(Registry, [:unique, :commanded_registry]),
       supervisor(Task.Supervisor, [[name: Commanded.Commands.TaskDispatcher]]),
       supervisor(Commanded.Aggregates.Supervisor, []),
     ]
