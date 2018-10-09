@@ -26,6 +26,10 @@ defmodule Commanded.ExampleDomain.BankAccount do
   alias Commands.{OpenAccount,DepositMoney,WithdrawMoney,CloseAccount}
   alias Events.{BankAccountOpened,MoneyDeposited,MoneyWithdrawn,AccountOverdrawn,BankAccountClosed}
 
+  def open_account(%BankAccount{state: nil}, %OpenAccount{initial_balance: "clearly invalid"}) do
+    {:error, :invalid_initial_balance}
+  end
+
   def open_account(%BankAccount{state: nil}, %OpenAccount{
         account_number: account_number,
         initial_balance: "clearly invalid"
@@ -59,6 +63,10 @@ defmodule Commanded.ExampleDomain.BankAccount do
       balance ->
         %MoneyWithdrawn{account_number: account_number, transfer_uuid: transfer_uuid, amount: amount, balance: balance}
     end
+  end
+
+  def close_account(%BankAccount{state: :closed}, %CloseAccount{}) do
+    []
   end
 
   def close_account(%BankAccount{state: :active}, %CloseAccount{account_number: account_number}) do
