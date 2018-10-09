@@ -168,7 +168,7 @@ defmodule Commanded.Aggregates.Aggregate do
           aggregate_lifespan_timeout(context, events)
 
         {:error, _} ->
-          :stop
+          30_000
 
         _ ->
           :infinity
