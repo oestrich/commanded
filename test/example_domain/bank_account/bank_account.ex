@@ -26,6 +26,13 @@ defmodule Commanded.ExampleDomain.BankAccount do
   alias Commands.{OpenAccount,DepositMoney,WithdrawMoney,CloseAccount}
   alias Events.{BankAccountOpened,MoneyDeposited,MoneyWithdrawn,AccountOverdrawn,BankAccountClosed}
 
+  def open_account(%BankAccount{state: nil}, %OpenAccount{
+        account_number: account_number,
+        initial_balance: "clearly invalid"
+      }) do
+    {:error, :invalid_initial_balance}
+  end
+
   def open_account(%BankAccount{state: nil}, %OpenAccount{account_number: account_number, initial_balance: initial_balance})
     when is_number(initial_balance) and initial_balance > 0
   do

@@ -167,6 +167,9 @@ defmodule Commanded.Aggregates.Aggregate do
         {:ok, _stream_version, events} ->
           aggregate_lifespan_timeout(context, events)
 
+        {:error, _} ->
+          :stop
+
         _ ->
           :infinity
       end
